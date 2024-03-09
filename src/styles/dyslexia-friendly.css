@@ -1,7 +1,14 @@
+/* Default style is light-mode */
 body {
     font-family: Arial, Comic Sans, sans-serif;
     background-color:  #F3F2E9;
     color: #24485E;
+}
+
+/* Dark mode style */
+body.dark-mode {
+    background-color:  #24485E;
+    color: #F3F2E9;
 }
 
 h1 {
