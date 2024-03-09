@@ -5,12 +5,14 @@ chrome.runtime.onInstalled.addListener(() => {
     // Here, you could set default values for your extension's settings if needed.
   });
   
+  /*
   chrome.action.onClicked.addListener((tab) => {
     chrome.scripting.executeScript({
       target: {tabId: tab.id},
       function: setPageStyle
     });
   });
+  */
   
   function setPageStyle() {
     chrome.tabs.sendMessage(tab.id, {action: "toggleDyslexiaFriendly"});
