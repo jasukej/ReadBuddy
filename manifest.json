@@ -11,7 +11,8 @@
     "permissions": [
       "activeTab",
       "storage",
-      "tabs"
+      "tabs",
+      "background"
     ],
     "action": {
       "default_icon": {
@@ -27,14 +28,44 @@
     "content_scripts": [
       {
         "matches": ["<all_urls>"],
-        "js": ["src/content.js"]
+        "js": ["src/content.js"],
+        "run_at": "document_start"
       }
     ],
     "web_accessible_resources": [
       {
         "resources": [
-          "content/*.css",
-          "src/popup/popup.js"
+          "src/styles/dyslexia-friendly.css",
+          "src/popup/popup.js",
+          "src/fonts/open-dyslexic/opendyslexic-regular-webfont.eot",
+          "src/fonts/open-dyslexic/opendyslexic-regular-webfont.woff",
+          "src/fonts/open-dyslexic/opendyslexic-regular-webfont.ttf",
+          "src/fonts/open-dyslexic/opendyslexic-regular-webfont.svg",
+          "src/fonts/open-dyslexic/opendyslexic-italic-webfont.eot",
+          "src/fonts/open-dyslexic/opendyslexic-italic-webfont.woff",
+          "src/fonts/open-dyslexic/opendyslexic-italic-webfont.ttf",
+          "src/fonts/open-dyslexic/opendyslexic-italic-webfont.svg",
+          "src/fonts/open-dyslexic/opendyslexic-bold-webfont.eot",
+          "src/fonts/open-dyslexic/opendyslexic-bold-webfont.woff",
+          "src/fonts/open-dyslexic/opendyslexic-bold-webfont.ttf",
+          "src/fonts/open-dyslexic/opendyslexic-bold-webfont.svg",
+          "src/fonts/open-dyslexic/opendyslexic-bolditalic-webfont.eot",
+          "src/fonts/open-dyslexic/opendyslexic-bolditalic-webfont.woff",
+          "src/fonts/open-dyslexic/opendyslexic-bolditalic-webfont.ttf",
+          "src/fonts/open-dyslexic/opendyslexic-bolditalic-webfont.svg",
+          "src/fonts/atkinson-hyperlegible/EOT/Atkinson-Hyperlegible-Bold-102.eot",
+          "src/fonts/atkinson-hyperlegible/EOT/Atkinson-Hyperlegible-BoldItalic-102.eot",
+          "src/fonts/atkinson-hyperlegible/EOT/Atkinson-Hyperlegible-Italic-102.eot",
+          "src/fonts/atkinson-hyperlegible/EOT/Atkinson-Hyperlegible-Regular-102.eot",
+          "src/fonts/atkinson-hyperlegible/SVG/Atkinson-Hyperlegible-Bold-102.svg",
+          "src/fonts/atkinson-hyperlegible/SVG/Atkinson-Hyperlegible-BoldItalic-102.svg",
+          "src/fonts/atkinson-hyperlegible/SVG/Atkinson-Hyperlegible-Italic-102.svg",
+          "src/fonts/atkinson-hyperlegible/SVG/Atkinson-Hyperlegible-Regular-102.svg",
+          "src/fonts/atkinson-hyperlegible/TTF/Atkinson-Hyperlegible-Bold-102.ttf",
+          "src/fonts/atkinson-hyperlegible/WOFF/Atkinson-Hyperlegible-BoldItalic-102.woff",
+          "src/fonts/atkinson-hyperlegible/WOFF/Atkinson-Hyperlegible-BoldItalic-102.woff",
+          "src/fonts/atkinson-hyperlegible/WOFF/Atkinson-Hyperlegible-Italic-102.woff",
+          "src/fonts/atkinson-hyperlegible/WOFF/Atkinson-Hyperlegible-Regular-102.woff"
         ],
         "matches": ["<all_urls>"]
       }

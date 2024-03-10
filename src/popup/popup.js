@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Popup elements
     const toggle = document.getElementById('ReadBuddyToggle'); 
     const sections = document.getElementById('sectionsContainer');
 
@@ -8,6 +9,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const slider = document.getElementById('rulerWidth');
     const widthText = document.getElementById('rulerWidthValue');
+
+    const fontDropdown = document.getElementById('fontDropdown');
+    const darkModeToggle = document.getElementById('darkModeToggle');
+
+    // Retrieve stored settings
+    chrome.storage.local.get(['fontSize', 'darkMode', 'fontChoice', 'rulerWidth'], function(result) {
+        if (result.fontSize) {
+            currentFontSize = result.fontSize;
+            fontSizeDisplay.textContent = `${currentFontSize}%`;
+        }
+        if (result.darkMode !== undefined) {
+            darkModeToggle.checked = result.darkMode;
+        }
+        if (result.fontChoice) {
+            fontDropdown.value = result.fontChoice;
+        }
+        if (result.rulerWidth) {
+            slider.value = result.rulerWidth;
+            widthText.textContent = result.rulerWidth;
+        }
+    });
 
     // Toggle dyslexic mode
     document.getElementById('ReadBuddyToggle').addEventListener('change', () => {
@@ -32,13 +54,24 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleSections(this.checked ? 'block' : 'none');
     });
 
+    // Change Font
+    fontDropdown.addEventListener('change', function() {
+        const selectedFont = this.value;
+        chrome.storage.local.set({ 'fontChoice': selectedFont });
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+            chrome.tabs.sendMessage(tabs[0].id, {action: 'changeFont', font: selectedFont});
+        });
+    });
+
+
     // FONT SIZE LISTENERS
     // Increase font size
     document.getElementById('increaseFontSize').addEventListener('click', () => {
         currentFontSize = Math.min(currentFontSize + 10, 500); // Increment and cap at 500%
         fontSizeDisplay.textContent = `${currentFontSize}%`;
+        chrome.storage.local.set({ 'fontSize': currentFontSize });
         chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-            chrome.tabs.sendMessage(tabs[0].id, {action: 'changeFontSize', newSize: currentFontSize});
+            chrome.tabs.sendMessage(tabs[0].id, {action: 'adjustFontSize', newSize: currentFontSize});
         });
     });
 
@@ -46,8 +79,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('decreaseFontSize').addEventListener('click', () => {
         currentFontSize = Math.max(currentFontSize - 10, 10); // Decrement and floor at 10%
         fontSizeDisplay.textContent = `${currentFontSize}%`;
+        chrome.storage.local.set({ 'fontSize': currentFontSize }); 
         chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-            chrome.tabs.sendMessage(tabs[0].id, {action: 'changeFontSize', newSize: currentFontSize});
+            chrome.tabs.sendMessage(tabs[0].id, {action: 'adjustFontSize', newSize: currentFontSize});
         });
     });
 
@@ -63,4 +97,14 @@ document.addEventListener('DOMContentLoaded', function() {
             chrome.tabs.sendMessage(tabs[0].id, { action: 'updateWidth', width: this.value });
         });
     });
+
+    // Toggle Dark Mode
+    darkModeToggle.addEventListener('change', () => {
+        const isDarkMode = darkModeToggle.checked;
+        chrome.storage.local.set({ 'darkMode': isDarkMode });
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+            chrome.tabs.sendMessage(tabs[0].id, {action: 'toggleDarkMode', darkMode: isDarkMode});
+        });
+    });
+
 });

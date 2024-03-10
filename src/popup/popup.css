@@ -631,6 +631,10 @@ video {
   border-width: 0;
 }
 
+.fixed {
+  position: fixed;
+}
+
 .my-4 {
   margin-top: 1rem;
   margin-bottom: 1rem;
