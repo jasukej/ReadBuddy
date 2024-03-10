@@ -1,3 +1,5 @@
+let currDarkMode = false;
+
 // Store original styles when extension is first activated
 let originalPageStyles;
 
@@ -35,7 +37,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       }
       break;
     case "changeFont":
-      updateGlobalStyles({ fontFamily: request.font });
+      updateGlobalStyles({ fontFamily: request.font, darkMode: currDarkMode });
       break;
     case "adjustFontSize":
       adjustFontSize(request.newSize);
@@ -53,8 +55,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       console.log("Ruler width updating...");
       createOrUpdateRuler(request.height);
       break;
-    case "toggleDarkMode":
-      updateGlobalStyles({ darkMode: request.darkMode });
+    case 'toggleDarkMode':
+      currDarkMode = request.darkMode;
+      updateGlobalStyles({darkMode: request.darkMode});
       break;
   }
 });
@@ -103,7 +106,11 @@ function updateGlobalStyles({
       font-size: ${fontSize};
       line-height: 1.6em !important;
     }
-
+    h1, h2, h3,
+    h4, h5, h6 {
+      font-size: 1.2*${fontSize} !important;
+    }
+  
     /* Additional styles */
     body {
       background-color: ${darkMode ? "#282828" : "#F3F2E9"};
