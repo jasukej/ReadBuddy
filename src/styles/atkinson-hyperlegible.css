@@ -1,0 +1,43 @@
+@font-face {
+    font-family: 'Atkinson Hyperlegible';
+    src: url('../fonts/atkinson-hyperlegible/EOT/Atkinson-Hyperlegible-Regular-102.eot');
+    src: url('../fonts/atkinson-hyperlegible/EOT/Atkinson-Hyperlegible-Regular-102.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/atkinson-hyperlegible/SVG/Atkinson-Hyperlegible-Regular-102.svg#AtkinsonHyperlegible') format('svg'),
+         url('../fonts/atkinson-hyperlegible/TTF/Atkinson-Hyperlegible-Regular-102.ttf') format('truetype'),
+         url('../fonts/atkinson-hyperlegible/WOFF/Atkinson-Hyperlegible-Regular-102.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Atkinson Hyperlegible';
+    src: url('../fonts/atkinson-hyperlegible/EOT/Atkinson-Hyperlegible-Italic-102.eot');
+    src: url('../fonts/atkinson-hyperlegible/EOT/Atkinson-Hyperlegible-Italic-102.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/atkinson-hyperlegible/SVG/Atkinson-Hyperlegible-Italic-102.svg#AtkinsonHyperlegible') format('svg'),
+         url('../fonts/atkinson-hyperlegible/TTF/Atkinson-Hyperlegible-Italic-102.ttf') format('truetype'),
+         url('../fonts/atkinson-hyperlegible/WOFF/Atkinson-Hyperlegible-Italic-102.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Atkinson Hyperlegible';
+    src: url('../fonts/atkinson-hyperlegible/EOT/Atkinson-Hyperlegible-Bold-102.eot');
+    src: url('../fonts/atkinson-hyperlegible/EOT/Atkinson-Hyperlegible-Bold-102.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/atkinson-hyperlegible/SVG/Atkinson-Hyperlegible-Bold-102.svg#AtkinsonHyperlegible') format('svg'),
+         url('../fonts/atkinson-hyperlegible/TTF/Atkinson-Hyperlegible-Bold-102.ttf') format('truetype'),
+         url('../fonts/atkinson-hyperlegible/WOFF/Atkinson-Hyperlegible-Bold-102.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Atkinson Hyperlegible';
+    src: url('../fonts/atkinson-hyperlegible/EOT/Atkinson-Hyperlegible-BoldItalic-102.eot');
+    src: url('../fonts/atkinson-hyperlegible/EOT/Atkinson-Hyperlegible-BoldItalic-102.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/atkinson-hyperlegible/SVG/Atkinson-Hyperlegible-BoldItalic-102.svg#AtkinsonHyperlegible') format('svg'),
+         url('../fonts/atkinson-hyperlegible/TTF/Atkinson-Hyperlegible-BoldItalic-102.ttf') format('truetype'),
+         url('../fonts/atkinson-hyperlegible/WOFF/Atkinson-Hyperlegible-BoldItalic-102.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
+}
