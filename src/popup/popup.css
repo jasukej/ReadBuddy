@@ -832,8 +832,8 @@ video {
 .text-lg {
   font-size: 1.125rem;
   line-height: 1.75rem;
-  margin-right:15px;
-  margin-left:0px;
+  margin-right:12px;
+  margin-left:-5px;
 }
 
 .font-bold {
