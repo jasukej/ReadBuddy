@@ -15,6 +15,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
+
+
+
+
 function increaseFontSize() {
   // Scale factor to increase font size
   const scaleFactor = 1.2;
@@ -43,35 +47,81 @@ function adjustFontSize(scaleFactor) {
 }
 
 
-// Function to inject CSS into the webpage
-function injectCSSFile(file) {
-  const style = document.createElement('style');
-  style.rel = 'stylesheet';
-  style.type = 'text/css';
-  style.href = chrome.extension.getURL(file);
-  document.head.appendChild(style);
-  return style;
+const changeFont = css => document.head.appendChild(document.createElement("style")).innerHTML = css
+
+changeFont(`
+* {
+  font-family: Arial, sans-serif !important;
+  letter-spacing: 0.1em !important;
+  word-spacing: 0.2em !important;
+  font-size: 16px !important;
+  line-height: 1.6em !important;
+}
+
+/* Additional styles */
+body {
+  background-color: #F3F2E9;
+  color: #24485E;
+}
+
+/* Dark mode style */
+body.dark-mode {
+  background-color: #24485E;
+  color: #F3F2E9;
+}
+`)
+
+function Create_Custom_Element(tag, attr_tag, attr_name, value) {
+  const custom_element = document.createElement(tag);
+  custom_element.setAttribute(attr_tag, attr_name);
+  custom_element.innerHTML = value
+  document.body.append(custom_element);
+
 }
 
 
-// Inject dyslexia-friendly CSS into the webpage
-injectCSSFile('./styles/dyslexia-friendly.css');
 
-//   const styles = `
-//   body {
-//     font-family: Arial, sans-serif;
-//     background-color: #f0f0f0;
+
+// Function to inject CSS into the webpage
+// function injectCSSFile(file) {
+//   const style = document.createElement('style');
+//   style.rel = 'stylesheet';
+//   style.type = 'text/css';
+//   style.href = chrome.extension.getURL(file);
+//   document.head.appendChild(style);
+//   return style;
 // }
 
-// .dyslexia-friendly {
-//     font-family: "OpenDyslexic", Arial, sans-serif;
-//     letter-spacing: 0.05em;
-//     word-spacing: 0.1em;
-//     line-height: 1.5;
-//     color: #000; /* Adjust color for readability */
-// }
-// `;
 
-// const styleElement = document.createElement('style');
-// styleElement.textContent = styles;
-// document.head.append(styleElement);
+// // Inject dyslexia-friendly CSS into the webpage
+// injectCSSFile('./styles/dyslexia-friendly.css');
+
+// `
+// body, h1, h2, h3, p{
+//   font-family: Arial, sans-serif !important;
+// }
+
+// /* Additional styles */
+// body {
+//   background-color: #F3F2E9;
+//   color: #24485E;
+// }
+
+// /* Dark mode style */
+// body.dark-mode {
+//   background-color: #24485E;
+//   color: #F3F2E9;
+// }
+
+// h1 {
+//   font-size: 18px;
+// }
+
+// p {
+//   font-size: 14px;
+//   text-align: left;
+//   letter-spacing: 0.25em;
+//   word-spacing: 1.00em; /* Approximate calculation */
+//   line-height: 1.5em;
+// }
+// `
