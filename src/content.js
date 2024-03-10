@@ -1,12 +1,15 @@
+let currDarkMode = false;
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log("Message received from background.js.");
   switch (request.action) {
     case "toggleDyslexiaFriendly":
+      updateGlobalStyles({});
       // Here you would toggle a class for dyslexia-friendly styles if you have predefined styles in your CSS.
       // document.body.classList.toggle('dyslexia-friendly');
       break;
     case 'changeFont':
-      updateGlobalStyles({fontFamily: request.font});
+      updateGlobalStyles({fontFamily: request.font, darkMode: currDarkMode});
       break;
     case 'adjustFontSize':
       adjustFontSize(request.newSize);
@@ -15,6 +18,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       createOrUpdateRuler(request.width);
       break;
     case 'toggleDarkMode':
+      currDarkMode = {darkMode: request.darkMode};
       updateGlobalStyles({darkMode: request.darkMode});
       break;
   }
@@ -24,21 +28,24 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 // Default values
 function updateGlobalStyles({ fontFamily = 'Arial, sans-serif', fontSize = '16px', darkMode = false }) {
   const css = `
-  * {
-    font-family: ${fontFamily} !important;
-    font-size: ${fontSize} !important;
-    line-height: 1.6em !important;
-    color: ${darkMode ? '#FFFFFF' : '#000000'} !important;
-    background-color: ${darkMode ? '#000000' : '#F3F2E9'} !important;
-  }
-
-  /* Additional styles */
-  a {
-    color: ${darkMode ? '#64b5f6' : '#1976d2'} !important; 
-  }
+    * {
+      font-family: ${fontFamily} !important;
+      letter-spacing: 0.1em !important;
+      word-spacing: 0.2em !important;
+      font-size: ${fontSize} !important;
+      line-height: 1.6em !important;
+    }
+    h1, h2, h3,
+    h4, h5, h6 {
+      font-size: 1.2*${fontSize} !important;
+    }
   
-  /* Add more specific selectors and adjust colors as needed */
-`;
+    /* Additional styles */
+    body {
+      background-color: ${darkMode ? '#282828' : '#F3F2E9'};
+      color: ${darkMode ? '#FFFFFF' : '#24485E'};
+    }
+  `;
 
   applyGlobalStyles(css);
 }
