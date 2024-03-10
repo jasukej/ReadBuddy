@@ -1,12 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="../styles/styles.css">
-</head>
-<body>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReadBuddy</title>
+    <link rel="stylesheet" href="popup.css">
     <script src="popup.js"></script>
+</head>
+<body class="bg-gray-50 w-72 h-auto">
+    <div id="popup-content">
+        <!-- Header -->
+        <div id="header" class="bg-gray-800 text-white p-4 rounded-lg flex justify-between items-center mb-4"> 
+            <h1 class="text-lg font-semibold">ReadBuddy</h1>
+            <div class="flex items-center">
+                <span class="mr-2 text-sm">Off</span>
+                <label class="switch">
+                    <input type="checkbox" id="ReadBuddyToggle" class="sr-only">
+                    <div class="toggle-bg bg-gray-200 border-2 border-gray-200 h-6 w-11 rounded-full"></div>
+                </label>
+                <span class="ml-2 text-sm">On</span>
+            </div>
+        </div>
+        
 
-    <h1>Settings</h1>
-    <button id="toggleDyslexiaMode">Toggle Mode</button>
+        <!-- Choosing Fonts -->
+        <div id="font-choice" class="mb-8 px-4">
+            <div class="flex items-center mb-4">
+                <h2 class="text-base font-bold mr-4">Choose Font:</h2>
+                <select id="fontDropdown" class="form-select block text-sm rounded-md border-gray-300 shadow-sm">
+                    <option value="default">Default Font</option>
+                    <option value="Arial">Arial</option>
+                    <option value="Open Dyslexic">Open Dyslexic</option>
+                    <!-- Add more fonts -->
+                </select>
+            </div>
+            <!-- Font Size Control -->
+            <div class="flex items-center">
+                <h2 class="text-base font-bold mr-10">Font Size:</h2>
+                <button id="decreaseFontSize" class="bg-gray-200 text-gray-600 hover:text-gray-700 p-2 rounded-l-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    &ndash;
+                </button>
+                <span id="fontSizeValue" class="px-4 py-2 text-sm bg-white border-t border-b border-gray-300 text-gray-700">
+                    100%
+                </span>
+                <button id="increaseFontSize" class="bg-gray-200 text-gray-600 hover:text-gray-700 p-2 rounded-r-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    &#43;
+                </button>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-200 my-4"></div>
+
+        <!-- Ruler -->
+        <div id="ruler-section" class="mb-4 px-4">
+            <div class="flex items-center mb-4">
+                <h2 class="text-base font-bold">Ruler</h2> 
+                <div class="flex ml-16 items-center">
+                    <span class="text-sm mr-2">Off</span> 
+                    <label class="switch">
+                        <input type="checkbox" id="toggleRuler" class="sr-only">
+                        <div class="toggle-bg bg-gray-200 border-2 border-gray-200 h-6 w-11 rounded-full"></div>
+                    </label>
+                    <span class="text-sm ml-2">On</span> 
+                </div>
+            </div>
+            <div class="mt-2 ml-24">
+                <label for="rulerWidth" class="block mb-2 text-sm">Width: <span id="rulerWidthValue">50</span>px</label> 
+                <input type="range" id="rulerWidth" class="w-full cursor-pointer" min="10" max="50" value="25">
+            </div>
+        </div>
+
+        <div class="border-t border-gray-200 my-4"></div> 
+
+        <!-- Dark Mode -->
+        <div id="dark-mode-section" class="flex items-center mb-4 px-4">
+            <h2 class="text-base font-bold mr-8">Dark Mode</h2> 
+            <div class="flex items-center">
+                <span class="text-sm mr-2">Off</span>
+                <label class="switch">
+                    <input type="checkbox" id="darkModeToggle" class="sr-only">
+                    <div class="toggle-bg bg-gray-200 border-2 border-gray-200 h-6 w-11 rounded-full"></div>
+                </label>
+                <span class="text-sm ml-2">On</span> 
+            </div>
+        </div>
 </body>
 </html>

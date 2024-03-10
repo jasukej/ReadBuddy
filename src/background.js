@@ -2,17 +2,19 @@
 
 chrome.runtime.onInstalled.addListener(() => {
     console.log('Dyslexia Friendly extension installed.');
-    // Here, you could set default values for your extension's settings if needed.
   });
   
-  /*
-  chrome.action.onClicked.addListener((tab) => {
-    chrome.scripting.executeScript({
-      target: {tabId: tab.id},
-      function: setPageStyle
+  // Function to send a message to the content script in the active tab.
+  function sendMessageToContentScript(message) {
+  // Query the current active tab
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        // Safety check for active tabs
+        if (tabs.length > 0) {
+            // Send message to the content script of the active tab
+            chrome.tabs.sendMessage(tabs[0].id, message);
+        }
     });
-  });
-  */
+  }
   
   function setPageStyle() {
     chrome.tabs.sendMessage(tab.id, {action: "toggleDyslexiaFriendly"});
@@ -20,9 +22,10 @@ chrome.runtime.onInstalled.addListener(() => {
 
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.message === 'toggleDyslexicMode') {
-        // Forward the message to the active tab's content script
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
             chrome.tabs.sendMessage(tabs[0].id, {action: "toggleDyslexicMode", fontDetails: request.fontDetails});
         });
     }
+
+    // More messages
 });

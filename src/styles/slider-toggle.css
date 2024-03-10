@@ -1,0 +1,37 @@
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 24px;
+    margin-left: 12px; /* Adjust based on layout */
+}
+
+.switch .toggle-bg {
+    cursor: pointer;
+    display: block;
+    background-color: #ccc;
+    transition: background-color 0.2s;
+    height: 100%;
+    width: 100%;
+    border-radius: 9999px; /* Fully rounded ends */
+}
+
+.switch input:checked + .toggle-bg {
+    background-color: #4F46E5; /* Or any color you prefer for 'active' state */
+}
+
+.switch .toggle-bg:before {
+    content: "";
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 22px;
+    height: 22px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.switch input:checked + .toggle-bg:before {
+    transform: translateX(24px);
+}
