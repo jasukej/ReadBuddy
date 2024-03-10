@@ -18,7 +18,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       createOrUpdateRuler(request.width);
       break;
     case 'toggleDarkMode':
-      currDarkMode = {darkMode: request.darkMode};
+      currDarkMode = request.darkMode;
       updateGlobalStyles({darkMode: request.darkMode});
       break;
   }
