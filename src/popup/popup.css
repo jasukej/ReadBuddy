@@ -3,7 +3,7 @@
   display: inline-block;
   width: 48px;
   height: 24px;
-  margin-left: 12px;
+  margin-left: 10px;
   /* Adjust based on layout */
 }
 
@@ -669,7 +669,7 @@ video {
 }
 
 .mr-2 {
-  margin-right: 0.5rem;
+  margin-right: 0rem;
 }
 
 .mr-4 {
@@ -832,6 +832,8 @@ video {
 .text-lg {
   font-size: 1.125rem;
   line-height: 1.75rem;
+  margin-right:12px;
+  margin-left:-5px;
 }
 
 .font-bold {
@@ -886,4 +888,9 @@ video {
 
 .focus\:ring-offset-2:focus {
   --tw-ring-offset-width: 2px;
+}
+
+.mascot-pic{
+  margin-right:5px;
+  margin-left:-10px;
 }
