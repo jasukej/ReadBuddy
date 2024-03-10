@@ -38,13 +38,13 @@ if (message.type === 'updateSettings') {
 // Listens for messages from other parts of the extension (e.g., popup)
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log("Background.js called.");
+  console.log(message.from);
   if (message.from === 'popup') {
+    console.log("Message from popup received.");
       chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
           if (tabs.length > 0) {
               let tabId = tabs[0].id;
-
-              // You might check if a content script needs to be injected here,
-              // for now we assume it's always needed when receiving a message.
+              
               chrome.scripting.executeScript({
                   target: {tabId: tabId},
                   files: ['src/content.js']
@@ -54,6 +54,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                       action: message.subject, 
                       ...message 
                   });
+                  console.log("Message sent to content.js.");
               }).catch(error => {
                   console.error('Error injecting content script: ', error);
               });

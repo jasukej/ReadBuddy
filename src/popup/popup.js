@@ -64,9 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('increaseFontSize').addEventListener('click', () => {
         currentFontSize = Math.min(currentFontSize + 10, 500); // Increment and cap at 500%
         fontSizeDisplay.textContent = `${currentFontSize}%`;
-        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-            chrome.tabs.sendMessage(tabs[0].id, {action: 'changeFontSize', newSize: currentFontSize});
-        });
+        chrome.runtime.sendMessage({from: 'popup', subject: 'adjustFontSize', newSize: currentFontSize});
         console.log("Font size user input sent.")
     });
 
@@ -104,8 +102,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           if (tabs.length > 0) {
               let tabId = tabs[0].id;
 
-              // You might check if a content script needs to be injected here,
-              // for now we assume it's always needed when receiving a message.
               chrome.scripting.executeScript({
                   target: {tabId: tabId},
                   files: ['src/content.js']
