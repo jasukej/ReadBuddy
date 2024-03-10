@@ -7,7 +7,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 // Add/Decrease font size
-
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'increaseFontSize') {
       increaseFontSize();
@@ -44,3 +43,35 @@ function adjustFontSize(scaleFactor) {
 }
 
 
+// Function to inject CSS into the webpage
+function injectCSSFile(file) {
+  const style = document.createElement('style');
+  style.rel = 'stylesheet';
+  style.type = 'text/css';
+  style.href = chrome.extension.getURL(file);
+  document.head.appendChild(style);
+  return style;
+}
+
+
+// Inject dyslexia-friendly CSS into the webpage
+injectCSSFile('./styles/dyslexia-friendly.css');
+
+//   const styles = `
+//   body {
+//     font-family: Arial, sans-serif;
+//     background-color: #f0f0f0;
+// }
+
+// .dyslexia-friendly {
+//     font-family: "OpenDyslexic", Arial, sans-serif;
+//     letter-spacing: 0.05em;
+//     word-spacing: 0.1em;
+//     line-height: 1.5;
+//     color: #000; /* Adjust color for readability */
+// }
+// `;
+
+// const styleElement = document.createElement('style');
+// styleElement.textContent = styles;
+// document.head.append(styleElement);
