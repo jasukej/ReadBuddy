@@ -14,12 +14,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const darkModeToggle = document.getElementById("darkModeToggle");
 
   // Retrieve and apply the stored extension state
-  chrome.storage.local.get(['extensionEnabled'], function(result) {
-    if (result.hasOwnProperty('extensionEnabled')) { 
-        toggle.checked = result.extensionEnabled;
-        toggleSections(result.extensionEnabled ? "block" : "none");
+  chrome.storage.local.get(["extensionEnabled"], function (result) {
+    if (result.hasOwnProperty("extensionEnabled")) {
+      toggle.checked = result.extensionEnabled;
+      toggleSections(result.extensionEnabled ? "block" : "none");
     }
-});
+  });
 
   // Retrieve stored settings
   chrome.storage.local.get(
@@ -47,10 +47,10 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("ReadBuddyToggle")
     .addEventListener("change", function () {
       const isEnabled = this.checked;
-      chrome.storage.local.set({ 'extensionEnabled': isEnabled }, function() {
-        console.log('Extension enabled state is set to ', isEnabled);
-    });
-    /*
+      chrome.storage.local.set({ extensionEnabled: isEnabled }, function () {
+        console.log("Extension enabled state is set to ", isEnabled);
+      });
+      /*
       chrome.runtime.sendMessage({
         from: "popup",
         subject: "toggleDyslexicMode",
@@ -143,6 +143,35 @@ document.addEventListener("DOMContentLoaded", function () {
       darkMode: this.checked,
     });
   });
+
+  // Toggle Text 2 Speech
+  const ttsToggle = document.getElementById("toggleTextToSpeech");
+  const ttsInstructions = document.getElementById("ttsInstructions");
+
+  chrome.storage.local.get(["ttsEnabled"], function (result) {
+    ttsToggle.checked = !!result.ttsEnabled;
+    updateTTSInstructions(ttsToggle.checked); // initial state of instructions
+  });
+
+  ttsToggle.addEventListener("change", function () {
+    const ttsStatus = this.checked;
+    chrome.storage.local.set({ ttsEnabled: ttsStatus });
+    chrome.runtime.sendMessage({
+      from: "popup",
+      subject: "toggleTextToSpeech",
+      status: ttsStatus,
+    });
+    updateTTSInstructions(ttsStatus);
+  });
+
+  // Update UI display
+  function updateTTSInstructions(isEnabled) {
+    if (isEnabled) {
+      ttsInstructions.classList.remove("hidden");
+    } else {
+      ttsInstructions.classList.add("hidden");
+    }
+  }
 });
 
 // Listens for messages from other parts of the extension (e.g., popup)

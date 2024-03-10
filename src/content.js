@@ -13,11 +13,11 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
 });
 
 // Check stored state whenever content.js is modified or reloaded
-chrome.storage.local.get(['extensionEnabled'], function(result) {
-  if (result.hasOwnProperty('extensionEnabled')) {
-      updateExtensionState(result.extensionEnabled);
+chrome.storage.local.get(["extensionEnabled"], function (result) {
+  if (result.hasOwnProperty("extensionEnabled")) {
+    updateExtensionState(result.extensionEnabled);
   } else {
-      updateExtensionState(false);
+    updateExtensionState(false);
   }
 });
 
@@ -55,22 +55,22 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       console.log("Ruler width updating...");
       createOrUpdateRuler(request.height);
       break;
-    case 'toggleDarkMode':
+    case "toggleDarkMode":
       currDarkMode = request.darkMode;
-      updateGlobalStyles({darkMode: request.darkMode});
+      updateGlobalStyles({ darkMode: request.darkMode });
       break;
   }
 });
 
 function updateExtensionState(enabled) {
   if (enabled) {
-      updateGlobalStyles({
-          fontFamily: "Arial, sans-serif", 
-          fontSize: "16px",
-          darkMode: false, 
-      });
+    updateGlobalStyles({
+      fontFamily: "Arial, sans-serif",
+      fontSize: "16px",
+      darkMode: false,
+    });
   } else {
-      resetToDefaultStyles();
+    resetToDefaultStyles();
   }
 }
 
@@ -211,3 +211,48 @@ function createOrUpdateRuler(newWidth) {
   ruler.style.height = `${newWidth}px`; // Always update width regardless of display state
   ruler.style.backgroundColor = "rgba(0,0,0,0.2)"; // Changed for better visibility
 }
+
+let ttsEnabled = false;
+
+// EventListener for TTS
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.subject === "toggleTextToSpeech") {
+    ttsEnabled = request.status;
+  }
+});
+
+// Function to send selected text to background.js
+function sendSelectedText() {
+  const selectedText = window.getSelection().toString().trim();
+  if (selectedText && ttsEnabled) {
+    chrome.runtime.sendMessage({
+      from: "content",
+      subject: "speakText",
+      text: selectedText,
+    });
+    console.log(selectedText + " will be read.");
+  }
+}
+
+// Attaching event listener to document
+document.addEventListener("mouseup", () => {
+  console.log(`TTS Enabled: ${ttsEnabled}`);
+  if (ttsEnabled) {
+    sendSelectedText();
+  }
+});
+
+// Play audio
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.subject === "playAudio") {
+    const audio = new Audio(message.audioUrl);
+    audio
+      .play()
+      .then(() => {
+        console.log("Speech is being played.");
+      })
+      .catch((error) => {
+        console.error("Error playing the speech: ", error);
+      });
+  }
+});

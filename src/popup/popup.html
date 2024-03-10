@@ -85,6 +85,26 @@
                 <span class="text-sm ml-2">On</span> 
             </div>
         </div>
+        
+        <!-- Text 2 Speech -->
+        <!-- Text 2 Speech -->
+        <div class="text-to-speech-section mb-4 px-4">
+            <div class="flex justify-between items-center mb-2"> <!-- Changed this line -->
+                <h2 class="text-base font-bold">Text-to-Speech</h2>
+                <div class="flex items-center">
+                    <span class="text-sm mr-1">Off</span>
+                    <label class="switch">
+                        <input type="checkbox" id="toggleTextToSpeech" class="sr-only">
+                        <div class="toggle-bg bg-gray-200 border-2 border-gray-200 h-6 w-11 rounded-full"></div>
+                    </label>
+                    <span class="text-sm ml-2">On</span>
+                </div>
+            </div>
+            <div id="ttsInstructions" class="hidden p-4 text-sm text-gray-600 bg-gray-100 rounded-lg">
+                Select text on the page and release to listen.
+            </div>
+        </div>
+        <div class="border-t border-gray-200 my-4"></div>
     </div>
 
         <script src="popup.js"></script>
