@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ReadBuddy</title>
     <link rel="stylesheet" href="popup.css">
-    <script src="popup.js"></script>
 </head>
 <body class="bg-gray-50 w-72 h-auto">
     <div id="popup-content">
         <!-- Header -->
-        <div id="header" class="bg-gray-800 text-white p-4 rounded-lg flex justify-between items-center mb-4"> 
+        <div id="header" class="bg-gray-800 text-white p-4 rounded-lg flex justify-between items-center"> 
             <h1 class="text-lg font-semibold">ReadBuddy</h1>
             <div class="flex items-center">
                 <span class="mr-2 text-sm">Off</span>
@@ -22,7 +21,7 @@
             </div>
         </div>
         
-
+        <div id="sectionsContainer" class = "mt-4">
         <!-- Choosing Fonts -->
         <div id="font-choice" class="mb-8 px-4">
             <div class="flex items-center mb-4">
@@ -84,5 +83,8 @@
                 <span class="text-sm ml-2">On</span> 
             </div>
         </div>
+    </div>
+
+        <script src="popup.js"></script>
 </body>
 </html>
