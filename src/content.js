@@ -24,20 +24,21 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 // Default values
 function updateGlobalStyles({ fontFamily = 'Arial, sans-serif', fontSize = '16px', darkMode = false }) {
   const css = `
-    * {
-      font-family: ${fontFamily} !important;
-      letter-spacing: 0.1em !important;
-      word-spacing: 0.2em !important;
-      font-size: ${fontSize} !important;
-      line-height: 1.6em !important;
-    }
+  * {
+    font-family: ${fontFamily} !important;
+    font-size: ${fontSize} !important;
+    line-height: 1.6em !important;
+    color: ${darkMode ? '#FFFFFF' : '#000000'} !important;
+    background-color: ${darkMode ? '#000000' : '#F3F2E9'} !important;
+  }
 
-    /* Additional styles */
-    body {
-      background-color: ${darkMode ? '#282828' : '#F3F2E9'};
-      color: ${darkMode ? '#FFFFFF' : '#24485E'};
-    }
-  `;
+  /* Additional styles */
+  a {
+    color: ${darkMode ? '#64b5f6' : '#1976d2'} !important; 
+  }
+  
+  /* Add more specific selectors and adjust colors as needed */
+`;
 
   applyGlobalStyles(css);
 }
