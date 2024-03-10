@@ -1,41 +1,113 @@
+// Store original styles when extension is first activated
+let originalPageStyles;
+
+// Listen for changes in state of toggleDyslexicMode
+chrome.storage.onChanged.addListener(function (changes, namespace) {
+  for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
+    if (key === "extensionEnabled") {
+      updateExtensionState(newValue);
+    }
+  }
+});
+
+// Check stored state whenever content.js is modified or reloaded
+chrome.storage.local.get(['extensionEnabled'], function(result) {
+  if (result.hasOwnProperty('extensionEnabled')) {
+      updateExtensionState(result.extensionEnabled);
+  } else {
+      updateExtensionState(false);
+  }
+});
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log("Message received from background.js.");
   switch (request.action) {
-    case "toggleDyslexiaFriendly":
-      // Here you would toggle a class for dyslexia-friendly styles if you have predefined styles in your CSS.
-      // document.body.classList.toggle('dyslexia-friendly');
+    case "toggleDyslexicMode":
+      if (request.dyslexicMode) {
+        storeOriginalStyles();
+        updateGlobalStyles({
+          fontFamily: "Arial, sans-serif",
+          fontSize: "16px",
+          darkMode: false,
+        });
+      } else {
+        resetToDefaultStyles(); // Reset to original styles when turning off
+      }
       break;
-    case 'changeFont':
-      updateGlobalStyles({fontFamily: request.font});
+    case "changeFont":
+      updateGlobalStyles({ fontFamily: request.font });
       break;
-    case 'adjustFontSize':
+    case "adjustFontSize":
       adjustFontSize(request.newSize);
       break;
-    case 'updateRulerWidth':
-      createOrUpdateRuler(request.width);
+    case "toggleRuler":
+      if (request.status) {
+        createOrUpdateRuler(20);
+        console.log("Ruler width updating...");
+        if (ruler) ruler.style.display = "block";
+      } else {
+        if (ruler) ruler.style.display = "none"; // Hide the ruler
+      }
       break;
-    case 'toggleDarkMode':
-      updateGlobalStyles({darkMode: request.darkMode});
+    case "updateRulerHeight":
+      console.log("Ruler width updating...");
+      createOrUpdateRuler(request.height);
+      break;
+    case "toggleDarkMode":
+      updateGlobalStyles({ darkMode: request.darkMode });
       break;
   }
 });
 
+function updateExtensionState(enabled) {
+  if (enabled) {
+      updateGlobalStyles({
+          fontFamily: "Arial, sans-serif", 
+          fontSize: "16px",
+          darkMode: false, 
+      });
+  } else {
+      resetToDefaultStyles();
+  }
+}
+
+function storeOriginalStyles() {
+  originalPageStyles = document.documentElement.style.cssText;
+}
+
+function resetToDefaultStyles() {
+  // Remove the applied global styles
+  const existingStyles = document.getElementById("customGlobalStyles");
+  if (existingStyles) {
+    existingStyles.remove();
+  }
+
+  // Revert to original page styles
+  if (originalPageStyles !== null) {
+    document.documentElement.style.cssText = originalPageStyles;
+  }
+}
+
 // Handles updating global styles with new parameters
 // Default values
-function updateGlobalStyles({ fontFamily = 'Arial, sans-serif', fontSize = '16px', darkMode = false }) {
+function updateGlobalStyles({
+  fontFamily = "Arial, sans-serif",
+  fontSize = "16px",
+  darkMode = false,
+}) {
   const css = `
     * {
       font-family: ${fontFamily} !important;
       letter-spacing: 0.1em !important;
       word-spacing: 0.2em !important;
-      font-size: ${fontSize} !important;
+      font-size: ${fontSize};
       line-height: 1.6em !important;
     }
 
     /* Additional styles */
     body {
-      background-color: ${darkMode ? '#282828' : '#F3F2E9'};
-      color: ${darkMode ? '#FFFFFF' : '#24485E'};
+      background-color: ${darkMode ? "#282828" : "#F3F2E9"};
+      color: ${darkMode ? "#FFFFFF" : "#24485E"};
     }
   `;
 
@@ -43,67 +115,92 @@ function updateGlobalStyles({ fontFamily = 'Arial, sans-serif', fontSize = '16px
 }
 
 // Applying or updating global styles in the document
-const applyGlobalStyles = css => {
+const applyGlobalStyles = (css) => {
   // Remove any existing custom global styles to avoid duplicates
-  const existingStyles = document.getElementById('customGlobalStyles');
+  const existingStyles = document.getElementById("customGlobalStyles");
   if (existingStyles) {
     existingStyles.remove();
   }
 
   // Apply new global styles
   const styleSheet = document.createElement("style");
-  styleSheet.id = 'customGlobalStyles';
+  styleSheet.id = "customGlobalStyles";
   styleSheet.type = "text/css";
   styleSheet.innerText = css;
-  document.head.appendChild(styleSheet);
+
+  (document.head || document.documentElement).appendChild(styleSheet);
 };
 
 // Initial global styles setup
-updateGlobalStyles({}); // Could be empty or with default values
+updateGlobalStyles({});
 
 // Function to inject CSS into the webpage
 function injectCSSFile(file) {
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.type = 'text/css';
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.type = "text/css";
   link.href = chrome.runtime.getURL(file);
   document.head.appendChild(link);
 }
 
+// Stores initial font size of every element
+let initialFontSizes = new Map();
+
 // Calculates font size
 function adjustFontSize(newSize) {
-  const scaleFactor = newSize / 100;  // Convert percentage to a decimal for scaling
-  const textElements = document.querySelectorAll('body *');
-  
-  // Adjust font size for each text element
-  textElements.forEach(element => {
-    const computedStyle = window.getComputedStyle(element);
-    const currentFontSize = parseFloat(computedStyle.fontSize);
-    const newFontSize = currentFontSize * scaleFactor; 
+  console.log(`Adjusting font size to new size: ${newSize}`);
+  if (isNaN(newSize)) {
+    console.error(`New size is not a valid number: ${newSize}`);
+    return;
+  }
 
-    element.style.fontSize = `${newFontSize}px`;
-  });
+  const scaleFactor = newSize / 100;
+  console.log(`Scale factor is: ${scaleFactor}`);
 
-}
+  const textElements = document.querySelectorAll("body *");
+  console.log(`Found ${textElements.length} elements to adjust.`);
 
-let ruler = null; 
-
-function createOrUpdateRuler(newWidth) {
-    if (!ruler) {
-        ruler = document.createElement('div');
-        ruler.style.position = 'fixed';
-        ruler.style.top = '0';
-        ruler.style.left = '0';
-        ruler.style.width = '100%'; 
-        ruler.style.pointerEvents = 'none';
-        ruler.style.zIndex = '9999';
-        document.body.appendChild(ruler);
-        
-        document.addEventListener('mousemove', (e) => {
-            ruler.style.top = `${e.clientY}px`;
-        });
+  textElements.forEach((element, index) => {
+    if (!initialFontSizes.has(element)) {
+      const computedStyle = window.getComputedStyle(element);
+      const initialFontSize = parseFloat(computedStyle.fontSize);
+      if (!isNaN(initialFontSize)) {
+        initialFontSizes.set(element, initialFontSize);
+      } else {
+        console.error(
+          `Failed to parse initial font size for element at index ${index}`
+        );
+        return;
+      }
     }
 
-    ruler.style.height = `${newWidth}px`;
-    ruler.style.backgroundColor = 'rgba(0,0,0,0.2)';
+    const initialSize = initialFontSizes.get(element);
+    const newFontSize = initialSize * scaleFactor;
+    console.log(
+      `Setting new font size for element at index ${index}: ${newFontSize}px`
+    );
+    element.style.fontSize = `${newFontSize}px`;
+  });
+}
+
+let ruler = null;
+
+function createOrUpdateRuler(newWidth) {
+  if (!ruler) {
+    ruler = document.createElement("div");
+    ruler.style.position = "fixed";
+    ruler.style.top = "0";
+    ruler.style.left = "0";
+    ruler.style.width = "100%";
+    ruler.style.pointerEvents = "none";
+    ruler.style.zIndex = "9999";
+    document.body.appendChild(ruler);
+
+    document.addEventListener("mousemove", (e) => {
+      ruler.style.top = `${e.clientY - 0.8 * ruler.offsetHeight}px`;
+    });
+  }
+
+  ruler.style.height = `${newWidth}px`; // Always update width regardless of display state
+  ruler.style.backgroundColor = "rgba(0,0,0,0.2)"; // Changed for better visibility
 }

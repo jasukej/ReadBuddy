@@ -1,14 +1,14 @@
 @font-face {
     font-family: 'Atkinson Hyperlegible';
-    src: url('../fonts/atkinson-hyperlegible/EOT/Atkinson-Hyperlegible-Regular-102.eot');
-    src: url('../fonts/atkinson-hyperlegible/EOT/Atkinson-Hyperlegible-Regular-102.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/atkinson-hyperlegible/SVG/Atkinson-Hyperlegible-Regular-102.svg#AtkinsonHyperlegible') format('svg'),
-         url('../fonts/atkinson-hyperlegible/TTF/Atkinson-Hyperlegible-Regular-102.ttf') format('truetype'),
-         url('../fonts/atkinson-hyperlegible/WOFF/Atkinson-Hyperlegible-Regular-102.woff') format('woff');
+    src: url('../fonts/atkinson-hyperlegible/AtkinsonHyperlegible-Regular.ttf');
+    src: url('../fonts/atkinson-hyperlegible/AtkinsonHyperlegible-Bold.ttf') format('truetype'),
+         url('../fonts/atkinson-hyperlegible/AtkinsonHyperlegible-BoldItalic.ttf') format('truetype'),
+         url('../fonts/atkinson-hyperlegible/AtkinsonHyperlegible-Italic.ttf.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 
+/*
 @font-face {
     font-family: 'Atkinson Hyperlegible';
     src: url('../fonts/atkinson-hyperlegible/EOT/Atkinson-Hyperlegible-Italic-102.eot');
@@ -41,3 +41,4 @@
     font-weight: bold;
     font-style: italic;
 }
+*/

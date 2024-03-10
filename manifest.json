@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "ReadBuddy",
     "version": "1.0",
-    "description": "Enhances readability for individuals with dyslexia.",
+    "description": "Enhances readability for individuals with dyslexia or visual impairment.",
     "icons": {
       "16": "src/icons/iconhead.png",
       "48": "src/icons/iconhead.png",
@@ -30,8 +30,11 @@
       {
         "matches": ["<all_urls>"],
         "js": ["src/content.js"],
-        "run_at": "document_start"
+        "run_at": "document_idle"
       }
+    ],
+    "host_permissions": [
+      "<all_urls>"
     ],
     "web_accessible_resources": [
       {
@@ -72,6 +75,8 @@
         ],
         "matches": ["<all_urls>"]
       }
-    ]
+    ],
+    "content_security_policy": {
+      "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com"}
   }
   
