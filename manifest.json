@@ -11,7 +11,9 @@
     "permissions": [
       "activeTab",
       "storage",
-      "tabs"
+      "tabs",
+      "scripting"
+      
     ],
     "action": {
       "default_icon": {
@@ -27,7 +29,10 @@
     "content_scripts": [
       {
         "matches": ["<all_urls>"],
-        "js": ["src/content.js"]
+        "js": ["src/content.js", "src/select/select.js"],
+        "css": ["src/select/select.css"],
+        "html": ["src/select/select.html"]
+        
       }
     ],
     "web_accessible_resources": [
