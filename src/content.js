@@ -98,7 +98,13 @@ function updateGlobalStyles({
   fontSize = "16px",
   darkMode = false,
 }) {
+
+  const importStatement = `
+  /* Import Google Fonts */
+  @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+`;
   const css = `
+  ${importStatement}
     * {
       font-family: ${fontFamily} !important;
       letter-spacing: 0.1em !important;
@@ -117,6 +123,7 @@ function updateGlobalStyles({
       color: ${darkMode ? "#FFFFFF" : "#24485E"};
     }
   `;
+
 
   applyGlobalStyles(css);
 }
