@@ -1,10 +1,11 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  connsole.log("2");
   switch (request.action) {
     case "toggleDyslexiaFriendly":
-      document.body.classList.toggle('dyslexia-friendly');
+      // document.body.classList.toggle('dyslexia-friendly');
       break;
     case 'changeFont':
-        changeFont(request.fontFamily);
+        changeFont(request.font);
         break;
     case 'adjustFontSize':
       console.log(request.newSize);
@@ -28,7 +29,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 // Handles font size
 function adjustFontSize(newSize) {
   const scaleFactor = newSize / 100;  // Convert percentage to a decimal for scaling
-
   const textElements = document.querySelectorAll('body *');
   
   // Adjust font size for each text element
@@ -39,15 +39,17 @@ function adjustFontSize(newSize) {
 
     element.style.fontSize = `${newFontSize}px`;
   });
+
+  console.log("2");
 }
 
 // Handles font changing
-function changeFont(fontName) {
-  document.body.style.fontFamily = fontName;
+function changeFont(font) {
+  document.body.style.fontFamily = font;
 
   const textElements = document.querySelectorAll('body *');
   textElements.forEach(element => {
-      element.style.fontFamily = fontName;
+      element.style.fontFamily = font;
   });
 }
 
@@ -61,9 +63,43 @@ function injectCSSFile(file) {
   return style;
 }
 
+// Applying default styles
+const applyGlobalStyles = css => {
+  const styleSheet = document.createElement("style");
+  styleSheet.type = "text/css";
+  styleSheet.innerText = css;
+  document.head.appendChild(styleSheet);
+};
 
-// Inject dyslexia-friendly CSS into the webpage
-injectCSSFile('./styles/dyslexia-friendly.css');
+// Then use it like this:
+applyGlobalStyles(`
+* {
+  font-family: Arial, sans-serif !important;
+  letter-spacing: 0.1em !important;
+  word-spacing: 0.2em !important;
+  font-size: 16px !important;
+  line-height: 1.6em !important;
+}
+
+/* Additional styles */
+body {
+  background-color: #F3F2E9;
+  color: #24485E;
+}
+
+/* Dark mode style */
+body.dark-mode {
+  background-color: #24485E;
+  color: #F3F2E9;
+}`);
+
+function Create_Custom_Element(tag, attr_tag, attr_name, value) {
+  const custom_element = document.createElement(tag);
+  custom_element.setAttribute(attr_tag, attr_name);
+  custom_element.innerHTML = value
+  document.body.append(custom_element);
+}
+
 
 //  RULER
 let ruler = null; 
@@ -74,7 +110,7 @@ function createOrUpdateRuler(newWidth) {
         ruler.style.position = 'fixed';
         ruler.style.top = '0';
         ruler.style.left = '0';
-        ruler.style.width = '100%'; // The ruler width will actually be the height for horizontal line
+        ruler.style.width = '100%'; 
         ruler.style.pointerEvents = 'none'; // Allow click-through
         ruler.style.zIndex = '9999';
         document.body.appendChild(ruler);

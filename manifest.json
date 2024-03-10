@@ -12,7 +12,8 @@
       "activeTab",
       "storage",
       "tabs",
-      "background"
+      "background",
+      "scripting"
     ],
     "action": {
       "default_icon": {
@@ -37,6 +38,8 @@
         "resources": [
           "src/styles/dyslexia-friendly.css",
           "src/popup/popup.js",
+          "src/content.js",
+          "src/background.js",
           "src/fonts/open-dyslexic/opendyslexic-regular-webfont.eot",
           "src/fonts/open-dyslexic/opendyslexic-regular-webfont.woff",
           "src/fonts/open-dyslexic/opendyslexic-regular-webfont.ttf",
