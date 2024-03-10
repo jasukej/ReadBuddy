@@ -4,8 +4,8 @@
     "version": "1.0",
     "description": "Enhances readability for individuals with dyslexia.",
     "icons": {
-      "16": "src/icons/icon16.png",
-      "48": "src/icons/icon48.png",
+      "16": "src/icons/iconhead.png",
+      "48": "src/icons/iconhead.png",
       "128": "src/icons/icon128.png"
     },
     "permissions": [
@@ -13,12 +13,11 @@
       "storage",
       "tabs",
       "scripting"
-      
     ],
     "action": {
       "default_icon": {
-        "16": "src/icons/icon16.png",
-        "48": "src/icons/icon48.png",
+        "16": "src/icons/iconhead.png",
+        "48": "src/icons/iconhead.png",
         "128": "src/icons/icon128.png"
       },
       "default_popup": "../src/popup/popup.html"
@@ -29,9 +28,7 @@
     "content_scripts": [
       {
         "matches": ["<all_urls>"],
-        "js": ["src/content.js", "src/select/select.js"],
-        "css": ["src/select/select.css"],
-        "html": ["src/select/select.html"]
+        "js": ["src/content.js"]
         
       }
     ],
